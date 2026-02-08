@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DriverFinder.Algorithms;
 using DriverFinder.Models;
+using DriverFinder.Algorithms;
 
 namespace DriverFinder;
 
@@ -152,5 +152,6 @@ public class Program
         Console.WriteLine("Команды:");
         Console.WriteLine("Сборка решения: dotnet build");
         Console.WriteLine("Запуск демонстрации: dotnet run --project DriverFinder");
+        Console.WriteLine("Запуск тестов: dotnet test");
     }
 }
