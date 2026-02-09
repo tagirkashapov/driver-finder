@@ -14,11 +14,11 @@ public class Program
 
         var demoConfig = new DemoConfig
         {
-            GridWidth = 100,
-            GridHeight = 100,
-            OrderX = 50,
-            OrderY = 50,
-            DriversCount = 10,
+            GridWidth = 1000,
+            GridHeight = 1000,
+            OrderX = 500,
+            OrderY = 500,
+            DriversCount = 100,
             NearestDriversToFind = 5
         };
 
@@ -103,6 +103,7 @@ public class Program
         {
             new BruteForce(),
             new Clustering(),
+            new PartialQuickSelect()
         };
     }
 
