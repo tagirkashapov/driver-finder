@@ -9,14 +9,10 @@ public class BruteForce : IAlgorithm
 {
     public List<Driver> FindNearestDrivers(Order order, List<Driver> drivers, int count = 5)
     {
-        if (order == null)
-            throw new ArgumentNullException(nameof(order));
-
-        if (drivers == null)
-            throw new ArgumentNullException(nameof(drivers));
-
-        if (count <= 0)
-            throw new ArgumentException("Count must be positive", nameof(count));
+        if (order == null) throw new ArgumentNullException(nameof(order));
+        if (drivers == null) throw new ArgumentNullException(nameof(drivers));
+        if (count <= 0) throw new ArgumentException("Count must be positive", nameof(count));
+        if (drivers.Count == 0) return new List<Driver>();
 
         var driversWithDistance = drivers.Select(driver => new
         {

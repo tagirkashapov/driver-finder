@@ -102,6 +102,7 @@ public class Program
         return new List<IAlgorithm>
         {
             new BruteForce(),
+            new Clustering(),
         };
     }
 
