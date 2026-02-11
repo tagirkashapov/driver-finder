@@ -22,22 +22,22 @@ public class PartialQuickSelect : IAlgorithm
         var distances = new double[drivers.Count];
         for (int i = 0; i < drivers.Count; i++)
         {
-            distances[i] = CalculateDistance(order, drivers[i]);
+            distances[i] = CalculateDistanceSq(order, drivers[i]);
         }
 
         double threshold = QuickSelect(distances, count - 1);
 
-        var result = new List<Driver>();
-        for (int i = 0; i < drivers.Count && result.Count < count * 2; i++)
+        var candidates = new List<(Driver Driver, double DistanceSq)>();
+
+        for (int i = 0; i < drivers.Count && candidates.Count < count * 2; i++)
         {
             if (distances[i] <= threshold * 1.1)
             {
-                result.Add(drivers[i]);
+                candidates.Add((drivers[i], distances[i]));
             }
         }
 
-        return result
-            .Select(d => new { Driver = d, DistanceSq = CalculateDistance(order, d) })
+        return candidates
             .OrderBy(x => x.DistanceSq)
             .Take(count)
             .Select(x => x.Driver)
@@ -98,14 +98,18 @@ public class PartialQuickSelect : IAlgorithm
     private List<Driver> SimpleSort(Order order, List<Driver> drivers, int count)
     {
         return drivers
-            .Select(d => new { Driver = d, Distance = CalculateDistance(order, d) })
-            .OrderBy(x => x.Distance)
+            .Select(d => new
+            {
+                Driver = d,
+                DistanceSq = CalculateDistanceSq(order, d)
+            })
+            .OrderBy(x => x.DistanceSq)
             .Take(count)
             .Select(x => x.Driver)
             .ToList();
     }
 
-    private static double CalculateDistance(Order order, Driver driver)
+    private static double CalculateDistanceSq(Order order, Driver driver)
     {
         int dx = driver.X - order.X;
         int dy = driver.Y - order.Y;

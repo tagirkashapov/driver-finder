@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using DriverFinder.Models;
 using DriverFinder.Algorithms;
 
@@ -18,7 +19,7 @@ public class Program
             GridHeight = 1000,
             OrderX = 500,
             OrderY = 500,
-            DriversCount = 100,
+            DriversCount = 1000,
             NearestDriversToFind = 5
         };
 
@@ -67,8 +68,8 @@ public class Program
 
         var random = new Random();
         var drivers = new List<Driver>(count);
-
         var allPositions = new List<(int X, int Y)>();
+
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
@@ -102,7 +103,7 @@ public class Program
         return new List<IAlgorithm>
         {
             new BruteForce(),
-            new Clustering(),
+            new Radius(),
             new PartialQuickSelect()
         };
     }
@@ -114,11 +115,13 @@ public class Program
 
         try
         {
-            var startTime = DateTime.Now;
-            var nearestDrivers = algorithm.FindNearestDrivers(order, drivers, count);
-            var elapsed = DateTime.Now - startTime;
+            algorithm.FindNearestDrivers(order, drivers, count);
 
-            Console.WriteLine($"Время выполнения: {elapsed.TotalMilliseconds:F2} мс");
+            var stopwatch = Stopwatch.StartNew();
+            var nearestDrivers = algorithm.FindNearestDrivers(order, drivers, count);
+            stopwatch.Stop();
+
+            Console.WriteLine($"Время выполнения: {stopwatch.Elapsed.TotalMilliseconds:F2} мс");
 
             if (nearestDrivers.Any())
             {
@@ -155,5 +158,6 @@ public class Program
         Console.WriteLine("Сборка решения: dotnet build");
         Console.WriteLine("Запуск демонстрации: dotnet run --project DriverFinder");
         Console.WriteLine("Запуск тестов: dotnet test");
+        Console.WriteLine("Запуск бенчмарков: dotnet run --project DriverFinder.Benchmarks/DriverFinder.Benchmarks.csproj -c Release");
     }
 }
